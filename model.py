@@ -29,9 +29,9 @@ def analyze_image(image):
         look_up = np.array([((i / 255.0) ** (1 / gamma)) * 255 for i in np.arange(256)]).astype("uint8")
         img_cv = cv2.LUT(img_cv, look_up)
         gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-    # ============================================================
-    # 🧱 STEP 1. RUST DETECTION (color + texture)
-    # ============================================================
+    
+    #  STEP 1. RUST DETECTION (color + texture)
+
     # Rust: orange-brown, dull (not bright plastic)
     lower_rust = np.array([5, 50, 40])     # hue 5–25, low V/S
     upper_rust = np.array([25, 200, 180])
@@ -51,25 +51,22 @@ def analyze_image(image):
 
     rust_ratio = cv2.countNonZero(mask_rust) / img_area
 
-    # ============================================================
-    # 🕳️ STEP 2. CRACK / DARK DAMAGE DETECTION
-    # ============================================================
+    #  STEP 2. CRACK / DARK DAMAGE DETECTION
     mask_dark = cv2.inRange(gray, 0, 55)
     mask_dark = cv2.morphologyEx(mask_dark, cv2.MORPH_OPEN, kernel)
     dark_ratio = cv2.countNonZero(mask_dark) / img_area
 
-    # ============================================================
-    # 🖍️ STEP 3. COMBINE MASKS FOR VISUALIZATION
-    # ============================================================
+
+    #  STEP 3. COMBINE MASKS FOR VISUALIZATION
+
     combined_mask = cv2.bitwise_or(mask_rust, mask_dark)
     annotated = img_cv.copy()
     contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(annotated, contours, -1, (0, 0, 255), 2)
     annotated = cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
 
-    # ============================================================
-    # 📊 STEP 4. SCORING LOGIC
-    # ============================================================
+    #  STEP 4. SCORING LOGIC
+   
     hazards = []
     score = 100
 

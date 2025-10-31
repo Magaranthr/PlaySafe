@@ -9,14 +9,14 @@ from streamlit_folium import st_folium
 from streamlit_javascript import st_javascript
 from ultralytics import YOLO
 
-# ==============================
-# ⚙️ CONFIGURATION
-# ==============================
+
+#  CONFIGURATION
+
 st.set_page_config(page_title="Playground Safety App", layout="wide")
 
-# ------------------------------
-# 🧭 PAGE STATE MANAGEMENT
-# ------------------------------
+
+#  PAGE STATE MANAGEMENT
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -29,9 +29,9 @@ def go_to_evaluation():
 def go_to_image_analysis():
     st.session_state.page = "image_analysis"
 
-# ------------------------------
-# 💅 GLOBAL STYLING
-# ------------------------------
+
+#  GLOBAL STYLING
+
 st.markdown("""
     <style>
     .block-container {
@@ -55,9 +55,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ------------------------------
-# 🏞️ APP HEADER BANNER
-# ------------------------------
+
+#  APP HEADER BANNER
+
 st.markdown("""
     <style>
     .block-container {
@@ -82,9 +82,9 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# ------------------------------
-# 🏠 LANDING PAGE
-# ------------------------------
+
+#  LANDING PAGE
+
 if st.session_state.page == "home":
     st.markdown("""<div style="color:gray;font-size:0.9rem;margin-top:1rem;">🏠 Home</div>""", unsafe_allow_html=True)
 
@@ -106,9 +106,9 @@ if st.session_state.page == "home":
     st.stop()
 
 
-# ------------------------------
-# 🗺️ MAP SECTION — FIND PLAYGROUND
-# ------------------------------
+
+#  MAP SECTION — FIND PLAYGROUND
+
 if st.session_state.page == "scanner":
     st.markdown("""<div style="color:gray;font-size:0.9rem;margin-bottom:0.5rem;">🏠 Home ➜ 📍 Map</div>""", unsafe_allow_html=True)
     st.markdown("#### <span style='color:#00509E'>📍 Find Nearby Playgrounds</span>", unsafe_allow_html=True)
@@ -127,7 +127,7 @@ if st.session_state.page == "scanner":
             pass
         return 41.8781, -87.6298  # Default fallback: Chicago
 
-    # 🌐 LOCATION RESOLUTION
+    #  LOCATION RESOLUTION
     GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
     radius = 1000  # in meters
 
@@ -149,7 +149,7 @@ if st.session_state.page == "scanner":
         user_lat, user_lng = get_location_by_ip()
         st.info(f"🌐 Using approximate IP-based location: ({user_lat:.4f}, {user_lng:.4f})")
 
-    # 🗺️ FETCH NEARBY PLAYGROUNDS
+    #  FETCH NEARBY PLAYGROUNDS
     url = (
         f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
         f"location={user_lat},{user_lng}"
@@ -173,7 +173,7 @@ if st.session_state.page == "scanner":
         st.warning("No playgrounds found nearby. Showing a sample location.")
         playgrounds = [{"name": "Sample Park", "lat": user_lat + 0.002, "lng": user_lng - 0.001}]
 
-    # 🗺️ MAP DISPLAY
+    #  MAP DISPLAY
     st.subheader("🗺️ Interactive Playground Map")
 
     m = folium.Map(location=[user_lat, user_lng], zoom_start=14, tiles=None)
@@ -218,9 +218,9 @@ if st.session_state.page == "scanner":
     st.stop()
 
 
-# ------------------------------
-# 🧪 IMAGE ANALYSIS + QUIZ PAGE
-# ------------------------------
+
+#  IMAGE ANALYSIS + QUIZ PAGE
+
 if st.session_state.page == "image_analysis":
     selected = st.session_state.get("selected_playground", {"name": "Unknown"})
     st.markdown(f"""
@@ -232,9 +232,9 @@ if st.session_state.page == "image_analysis":
     st.header(f"🧪 Playground Image Analysis — {selected['name']}")
     st.write("Upload a playground photo to analyze safety using the AI model, then complete the safety quiz below.")
 
-    # ------------------------------
-    # 📸 IMAGE UPLOAD & AI ANALYSIS
-    # ------------------------------
+    
+    #  IMAGE UPLOAD & AI ANALYSIS
+    
     uploaded_file = st.file_uploader("📸 Upload a playground image", type=["jpg", "jpeg", "png"])
 
     if uploaded_file:
@@ -265,9 +265,9 @@ if st.session_state.page == "image_analysis":
     else:
         st.info("📥 Please upload a playground image to begin AI analysis.")
 
-    # ------------------------------
-    # 🧠 SAFETY QUIZ SECTION
-    # ------------------------------
+    
+    #  SAFETY QUIZ SECTION
+    
     st.markdown("#### <span style='color:#FF7A00'>🧠 Safety Quiz</span>", unsafe_allow_html=True)
 
     if "quiz_started" not in st.session_state:
@@ -323,9 +323,9 @@ if st.session_state.page == "image_analysis":
         else:
             st.error("🚨 High risk detected! Supervision and repairs needed.")
 
-    # ------------------------------
-    # 🌈 FOOTER
-    # ------------------------------
+    
+    # FOOTER
+    
     st.markdown("""
         <hr>
         <div style='text-align:center; color:gray; font-size:0.85rem;'>
