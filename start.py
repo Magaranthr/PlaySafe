@@ -210,7 +210,7 @@ if st.session_state.page == "scanner":
         st.info("👆 Click on a pin to select a playground.")
 
     if selected:
-        if st.button("➡️ Proceed to Image Analysis", use_container_width=True, type="primary"):
+        if st.button("➡️ Proceed to Playground Analysis", use_container_width=True, type="primary"):
             st.session_state.page = "image_analysis"
             st.session_state.selected_playground = selected
             st.rerun()
@@ -225,7 +225,7 @@ if st.session_state.page == "image_analysis":
     selected = st.session_state.get("selected_playground", {"name": "Unknown"})
     st.markdown(f"""
         <div style="color:gray;font-size:0.9rem;margin-bottom:0.5rem;">
-            🏠 Home ➜ 📍 Map ➜ 🧪 Image Analysis
+            🏠 Home ➜ 📍 Map ➜ 🧪 Playground Analysis
         </div>
     """, unsafe_allow_html=True)
 
@@ -329,7 +329,7 @@ if st.session_state.page == "image_analysis":
     st.markdown("""
         <hr>
         <div style='text-align:center; color:gray; font-size:0.85rem;'>
-            Made with love by PlaySafe foundation • Data sourced from Google Maps
+            Made by Magaranth Rajkumar • Data sourced from Google Maps
         </div>
     """, unsafe_allow_html=True)
     
